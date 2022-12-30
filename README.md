@@ -6,6 +6,10 @@ with [catalyst_builder](https://pub.dev/packages/catalyst_builder) and the defau
 The main advantage is having dependency injection in all your routes / widgets without wire them the
 hard way.
 
+## How does it work?
+Check out the "[under the hood](./docs/under-the-hood.md)" doc.
+
+
 ## Installation
 
 - Follow the setup steps for [catalyst_builder](https://pub.dev/packages/catalyst_builder).
