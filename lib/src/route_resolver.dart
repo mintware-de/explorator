@@ -2,6 +2,9 @@ import 'package:catalyst_builder/catalyst_builder.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/widgets.dart';
 
+/// The RouteResolver is used to resolve [Route]s from [RouteSettings].
+/// All possible routes are provided by the [RouteProvider]s which are injected
+/// by the routeProvider tag.
 @Service()
 class RouteResolver {
   final List<RouteProvider> _providers;
@@ -48,6 +51,10 @@ class RouteResolver {
     return null;
   }
 
+  /// Creates a enhanced service provider which contains additional services:
+  /// [RouteArguments] The arguments for the route which was resolved.
+  ///                  This contains query parameters and path variables
+  /// [RouteSettings]  The [RouteSettings] for the resolved route.
   ServiceProvider _createSubProvider(
     Map<String, String> pathVariables,
     Map<String, String> queryParameters,

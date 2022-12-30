@@ -1,7 +1,7 @@
 import 'exception/unbalanced_curly_braces_exception.dart';
 import 'exception/unexpected_char_exception.dart';
 
-/// Provides functionality for building route paths to expressions.
+/// Provides functionality for converting route paths to expressions.
 class RouteExpressionBuilder {
   final String _path;
 
