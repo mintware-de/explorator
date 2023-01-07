@@ -25,30 +25,34 @@ class RouteResolver {
 
   /// Resolve a route for the given [settings].
   Route<dynamic>? resolveRoute(RouteSettings settings) {
-    var routeName = settings.name;
-
-    if (routeName == null) {
+    if (settings.name == null) {
       return null;
     }
 
-    var uri = Uri.parse(routeName);
-    routeName = Uri.decodeFull(uri.path);
+    var uri = Uri.parse(settings.name!);
+    var routeName = Uri.decodeFull(uri.path);
 
-    for (var route in _allRoutes) {
-      if (route.expression.hasMatch(routeName)) {
-        var pathVariables = _getPathVariables(route.expression, routeName);
-
-        var subProvider = _createSubProvider(
-          pathVariables,
-          uri.queryParameters,
-          settings,
-        );
-
-        var widget = route.builder(subProvider);
-        return _routeBuilder.build(widget, settings);
-      }
+    var route = _matchRoute(routeName);
+    if (route == null) {
+      return null;
     }
-    return null;
+
+    var subProvider = _createSubProvider(
+      route,
+      routeName,
+      uri.queryParameters,
+      settings,
+    );
+
+    var widget = route.builder(subProvider);
+    return _routeBuilder.build(widget, settings);
+  }
+
+  RegisteredRoute? _matchRoute(String routeName) {
+    return _allRoutes.cast<RegisteredRoute?>().firstWhere(
+          (route) => route!.expression.hasMatch(routeName),
+          orElse: () => null,
+        );
   }
 
   /// Creates a enhanced service provider which contains additional services:
@@ -56,32 +60,35 @@ class RouteResolver {
   ///                  This contains query parameters and path variables
   /// [RouteSettings]  The [RouteSettings] for the resolved route.
   ServiceProvider _createSubProvider(
-    Map<String, String> pathVariables,
+    RegisteredRoute route,
+    String routeName,
     Map<String, String> queryParameters,
     RouteSettings settings,
   ) {
     var subProvider = _provider;
-    if (subProvider is EnhanceableProvider) {
-      subProvider = (subProvider as EnhanceableProvider).enhance(
-        services: [
-          LazyServiceDescriptor<RouteArguments>(
-            (p) => RouteArguments(pathVariables, queryParameters),
-            const Service(
-              lifetime: ServiceLifetime.transient,
-              exposeAs: RouteArguments,
-            ),
-          ),
-          LazyServiceDescriptor<RouteSettings>(
-            (p) => settings,
-            const Service(
-              lifetime: ServiceLifetime.transient,
-              exposeAs: RouteSettings,
-            ),
-          )
-        ],
-      );
+    if (subProvider is! EnhanceableProvider) {
+      return subProvider;
     }
-    return subProvider;
+
+    var pathVariables = _getPathVariables(route.expression, routeName);
+    return (subProvider as EnhanceableProvider).enhance(
+      services: [
+        LazyServiceDescriptor<RouteArguments>(
+          (p) => RouteArguments(pathVariables, queryParameters),
+          const Service(
+            lifetime: ServiceLifetime.transient,
+            exposeAs: RouteArguments,
+          ),
+        ),
+        LazyServiceDescriptor<RouteSettings>(
+          (p) => settings,
+          const Service(
+            lifetime: ServiceLifetime.transient,
+            exposeAs: RouteSettings,
+          ),
+        )
+      ],
+    );
   }
 
   Map<String, String> _getPathVariables(RegExp regExp, String routeName) {
