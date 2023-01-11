@@ -48,11 +48,15 @@ void main() {
 
     expect(enhancedServices, isNotEmpty);
     var first = enhancedServices.first;
+    var last = enhancedServices.last;
     var args = first.factory(mockServiceProvider) as RouteArguments;
+    var settings = last.factory(mockServiceProvider) as RouteSettings;
     expect(first.service.exposeAs, equals(RouteArguments));
     expect(first.service.lifetime, equals(ServiceLifetime.transient));
     expect(args.pathVariables, isEmpty);
     expect(args.queryParameters, isEmpty);
+
+    expect(settings, isNotNull);
   });
 
   test('resolve with arguments', () {
