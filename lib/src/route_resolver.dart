@@ -7,18 +7,17 @@ import 'package:flutter/widgets.dart';
 /// by the routeProvider tag.
 @Service()
 class RouteResolver {
-  final List<RouteProvider> _providers;
   final RouteBuilder _routeBuilder;
-  final ServiceProvider _provider;
+  final ServiceProvider _serviceProvider;
   final List<RegisteredRoute> _allRoutes = [];
 
   /// RouteResolver constructor.
   RouteResolver(
-    @Inject(tag: RouteProvider.tag) this._providers,
+    @Inject(tag: RouteProvider.tag) List<RouteProvider> providers,
     this._routeBuilder,
-    this._provider,
+    this._serviceProvider,
   ) {
-    for (var provider in _providers) {
+    for (var provider in providers) {
       _allRoutes.addAll(provider.routes);
     }
   }
@@ -65,7 +64,7 @@ class RouteResolver {
     Map<String, String> queryParameters,
     RouteSettings settings,
   ) {
-    var subProvider = _provider;
+    var subProvider = _serviceProvider;
     if (subProvider is! EnhanceableProvider) {
       return subProvider;
     }
