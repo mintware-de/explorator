@@ -35,16 +35,16 @@ That means, we can use the given provider to resolve our `Screen/Widget n` witho
 Since the `App Routes` class is not imported anywhere (ignore generated code 😉), the coupling is not worth mentioning.
 
 As you noted, there is a connection between `DefaultServiceProvider` (DSP) and `App Routes`. That means, that the 
-`App Routes` class must be decorated with `@Service(tags: [#routeProvider])`.
+`App Routes` class must be decorated with `@Service(tags: [RouteProvider.tag])`.
 
 -----
 
 Next step: take a look on the connection between `RouteResolver` and `RouteProvider` / `ServiceProvider`.
 
 The [`RouteResolver`](../lib/src/route_resolver.dart) expects in the constructor a `List<RouteProvider>`. If you take
-a look in the code, you can see, that the constructor parameter is decorated with `@Inject(tag: #routeProvider)`.
+a look in the code, you can see, that the constructor parameter is decorated with `@Inject(tag: RouteProvider.tag)`.
 
-Now you can put two and two together. The `ServiceProvider` takes all services that are tagged with `#routeProvider`, 
+Now you can put two and two together. The `ServiceProvider` takes all services that are tagged with `RouteProvider.tag`, 
 including our `App Routes` class, and inject it as a list to the `RouteResolver`.
 
 -----

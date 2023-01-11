@@ -4,7 +4,7 @@ import 'package:explorator_example/other/variables_screen.dart';
 
 import 'other_screen.dart';
 
-@Service(tags: [#routeProvider])
+@Service(tags: [RouteProvider.tag])
 class OtherRouteProvider implements RouteProvider {
   @override
   List<RegisteredRoute> get routes => [

@@ -2,7 +2,7 @@ import 'package:catalyst_builder/catalyst_builder.dart';
 import 'package:explorator/explorator.dart';
 import 'package:explorator_example/splash/splash_screen.dart';
 
-@Service(tags: [#routeProvider])
+@Service(tags: [RouteProvider.tag])
 class SplashRouteProvider implements RouteProvider {
   @override
   List<RegisteredRoute> get routes => [
