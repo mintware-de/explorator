@@ -14,7 +14,7 @@ class RouteResolver {
 
   /// RouteResolver constructor.
   RouteResolver(
-    @Inject(tag: #routeProvider) this._providers,
+    @Inject(tag: RouteProvider.tag) this._providers,
     this._routeBuilder,
     this._provider,
   ) {

@@ -78,9 +78,8 @@ class MyApp extends StatelessWidget {
 After you set up the routing, you can register routes.
 
 ```dart
-/// Create a class that implements the RouteProvider and add the @Service annotation with a 
-/// #routeProvider tag.
-@Service(tags: [#routeProvider])
+/// Create a class that implements the RouteProvider and add the @Service annotation with a tag.
+@Service(tags: [RouteProvider.tag])
 class HomeRouteProvider implements RouteProvider {
   @override
   List<RegisteredRoute> get routes =>
