@@ -4,18 +4,20 @@ import 'package:flutter/widgets.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'mocks.mocks.dart';
+import 'mocks.dart';
 
 void main() {
   late RouteResolver resolver;
   late MockServiceProviderForTest mockServiceProvider;
   late List<LazyServiceDescriptor> enhancedServices;
   late Map<String, dynamic> enhancedParameters;
+  late MockRouteMatcher mockRouteMatcher;
 
   setUp(() {
     enhancedServices = [];
     enhancedParameters = {};
 
+    mockRouteMatcher = MockRouteMatcher();
     mockServiceProvider = MockServiceProviderForTest();
     when(mockServiceProvider.enhance(
       services: anyNamed('services'),
@@ -26,14 +28,33 @@ void main() {
       return mockServiceProvider;
     });
 
+    when(mockRouteMatcher.match(any)).thenAnswer((i) {
+      switch (i.positionalArguments[0]) {
+        case '/hello':
+          return RegisteredRoute(
+            path: '/hello',
+            builder: (p0) => (ctx) => Container(),
+          );
+        case '/hello/foo':
+          return RegisteredRoute(
+            path: '/hello/{name}',
+            builder: (p0) => (ctx) => Container(),
+          );
+        default:
+          return null;
+      }
+    });
+
     var mockProvider = MockRouteProvider();
     when(mockProvider.routes).thenReturn([
-      RegisteredRoute(path: '/hello', builder: (p0) => (ctx) => Container()),
       RegisteredRoute(
           path: '/hello/{name}', builder: (p0) => (ctx) => Container()),
     ]);
     resolver = RouteResolver(
-        [mockProvider], MaterialRouteBuilder(), mockServiceProvider);
+      mockRouteMatcher,
+      MaterialRouteBuilder(),
+      mockServiceProvider,
+    );
   });
 
   test('resolve not existing', () {

@@ -9,18 +9,14 @@ import 'package:flutter/widgets.dart';
 class RouteResolver {
   final RouteBuilder _routeBuilder;
   final ServiceProvider _serviceProvider;
-  final List<RegisteredRoute> _allRoutes = [];
+  final RouteMatcher _routeMatcher;
 
   /// RouteResolver constructor.
   RouteResolver(
-    @Inject(tag: RouteProvider.tag) List<RouteProvider> providers,
+    this._routeMatcher,
     this._routeBuilder,
     this._serviceProvider,
-  ) {
-    for (var provider in providers) {
-      _allRoutes.addAll(provider.routes);
-    }
-  }
+  );
 
   /// Resolve a route for the given [settings].
   Route<dynamic>? resolveRoute(RouteSettings settings) {
@@ -31,7 +27,7 @@ class RouteResolver {
     var uri = Uri.parse(settings.name!);
     var routeName = Uri.decodeFull(uri.path);
 
-    var route = _matchRoute(routeName);
+    var route = _routeMatcher.match(routeName);
     if (route == null) {
       return null;
     }
@@ -45,13 +41,6 @@ class RouteResolver {
 
     var widget = route.builder(subProvider);
     return _routeBuilder.build(widget, settings);
-  }
-
-  RegisteredRoute? _matchRoute(String routeName) {
-    return _allRoutes.cast<RegisteredRoute?>().firstWhere(
-          (route) => route!.expression.hasMatch(routeName),
-          orElse: () => null,
-        );
   }
 
   /// Creates a enhanced service provider which contains additional services:
