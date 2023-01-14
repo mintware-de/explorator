@@ -2,12 +2,17 @@ import 'package:catalyst_builder/catalyst_builder.dart';
 import 'package:explorator/explorator.dart';
 import 'package:mockito/annotations.dart';
 
+export 'mocks.mocks.dart';
+
 dynamic resolveMock<T>() {
   return false;
 }
 
 @GenerateMocks(
-  [RouteProvider],
+  [
+    RouteProvider,
+    RouteMatcher,
+  ],
   customMocks: [
     MockSpec<ServiceProviderForTest>(fallbackGenerators: {
       #resolve: resolveMock,
