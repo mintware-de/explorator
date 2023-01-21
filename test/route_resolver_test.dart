@@ -23,8 +23,12 @@ void main() {
       services: anyNamed('services'),
       parameters: anyNamed('parameters'),
     )).thenAnswer((realInvocation) {
-      enhancedServices.addAll(realInvocation.namedArguments[#services]);
-      enhancedParameters.addAll(realInvocation.namedArguments[#parameters]);
+      enhancedServices.addAll(
+        realInvocation.namedArguments[#services] as List<LazyServiceDescriptor>,
+      );
+      enhancedParameters.addAll(
+        realInvocation.namedArguments[#parameters] as Map<String, dynamic>,
+      );
       return mockServiceProvider;
     });
 
