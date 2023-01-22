@@ -4,9 +4,7 @@ import 'package:mockito/annotations.dart';
 
 export 'mocks.mocks.dart';
 
-dynamic resolveMock<T>() {
-  return false;
-}
+dynamic resolveMock<T>() => false;
 
 @GenerateMocks(
   [
@@ -21,7 +19,8 @@ dynamic resolveMock<T>() {
 )
 void main() {}
 
-class ServiceProviderForTest implements ServiceProvider, EnhanceableProvider {
+class ServiceProviderForTest
+    implements ServiceProvider, EnhanceableProvider, ServiceRegistry {
   @override
   void boot() {}
 
@@ -45,4 +44,12 @@ class ServiceProviderForTest implements ServiceProvider, EnhanceableProvider {
 
   @override
   List resolveByTag(Symbol tag) => throw UnimplementedError();
+
+  @override
+  void register<T>(
+    ServiceFactory<T> factory, [
+    Service service = const Service(),
+  ]) {
+    throw UnimplementedError();
+  }
 }

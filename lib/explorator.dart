@@ -2,6 +2,7 @@ library explorator;
 
 export 'src/exception/unbalanced_curly_braces_exception.dart';
 export 'src/exception/unexpected_char_exception.dart';
+export 'src/extensions.dart';
 export 'src/material_route_builder.dart';
 export 'src/registered_route.dart';
 export 'src/route_arguments.dart';
