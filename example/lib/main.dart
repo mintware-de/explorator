@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // Use the navigator key
+      navigatorKey: _provider.resolve<GlobalKey<NavigatorState>>(),
       // Set the initial route.
       initialRoute: '/',
       // Use the RouteResolver for generating routes

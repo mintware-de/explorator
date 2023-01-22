@@ -50,6 +50,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // Use the navigator key
+      navigatorKey: _provider.resolve<GlobalKey<NavigatorState>>(),
       // Set the initial route. 
       initialRoute: '/home/HelloFlutter',
       // Use the RouteResolver for generating routes
@@ -141,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-To navigate between routes you can use the default `Navigator.of(context).xxxNamed` methods.
+To navigate between routes you can use the [`Routing`](../lib/src/routing.dart) class or the default `Navigator.of(context).xxxNamed` methods.
 
 You find a full example in the [example](../example) directory.
 

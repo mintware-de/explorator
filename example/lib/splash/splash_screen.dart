@@ -1,20 +1,14 @@
 import 'package:catalyst_builder/catalyst_builder.dart';
+import 'package:explorator/explorator.dart';
 import 'package:flutter/material.dart';
 
 @Service(lifetime: ServiceLifetime.transient)
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+  final Routing _routing;
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+  SplashScreen(this._routing, {super.key}) {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/home');
+      _routing.replace('/home');
     });
   }
 

@@ -1,15 +1,13 @@
 import 'package:catalyst_builder/catalyst_builder.dart';
+import 'package:explorator/explorator.dart';
 import 'package:flutter/material.dart';
 
 @Service(lifetime: ServiceLifetime.transient)
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  final Routing _routing;
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  const HomeScreen(this._routing, {super.key});
 
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
             subtitle: const Text('Navigate to /other'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              Navigator.of(context).pushNamed('/other');
+              _routing.go('/other');
             },
           ),
           ListTile(
@@ -31,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
             subtitle: const Text('Navigate to /variables/{type=path}'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              Navigator.of(context).pushNamed('/variables/path');
+              _routing.go('/variables/path');
             },
           ),
           ListTile(
@@ -39,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             subtitle: const Text('Navigate to /variables/{type=query}?foo=bar'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              Navigator.of(context).pushNamed('/variables/query?foo=bar');
+              _routing.go('/variables/query?foo=bar');
             },
           ),
           ListTile(
@@ -47,9 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
             subtitle: const Text('Navigate to /variables/settings?query=foo'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
-              Navigator.of(context).pushNamed(
+              _routing.go(
                 '/variables/settings?foo=bar',
-                arguments: {'argument': 'other'},
+                state: {'argument': 'other'},
               );
             },
           ),

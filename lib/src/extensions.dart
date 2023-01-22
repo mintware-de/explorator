@@ -17,6 +17,7 @@ extension ServiceProviderExtension on ServiceProvider {
     _addServiceProvider();
     _addRouteBuilder(routeBuilder);
     _addNavigatorKey(navigatorKey ?? GlobalKey<NavigatorState>());
+    _addRouting();
   }
 
   void _addServiceProvider() {
@@ -52,6 +53,15 @@ extension ServiceProviderExtension on ServiceProvider {
         exposeAs: GlobalKey<NavigatorState>,
         lifetime: ServiceLifetime.singleton,
       ),
+    );
+  }
+
+  void _addRouting() {
+    if (has<dynamic>(Routing)) return;
+
+    (this as ServiceRegistry).register<Routing>(
+      (p) => Routing(navigatorKey: p.resolve<GlobalKey<NavigatorState>>()),
+      const Service(exposeAs: Routing, lifetime: ServiceLifetime.singleton),
     );
   }
 }
