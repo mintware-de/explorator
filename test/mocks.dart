@@ -1,5 +1,6 @@
 import 'package:catalyst_builder/catalyst_builder.dart';
 import 'package:explorator/explorator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mockito/annotations.dart';
 
 export 'mocks.mocks.dart';
@@ -10,11 +11,15 @@ dynamic resolveMock<T>() => false;
   [
     RouteProvider,
     RouteMatcher,
+    NavigatorState,
   ],
   customMocks: [
     MockSpec<ServiceProviderForTest>(fallbackGenerators: {
       #resolve: resolveMock,
     }),
+    MockSpec<GlobalKey<NavigatorState>>(
+      as: #MockNavigatorKey,
+    ),
   ],
 )
 void main() {}
