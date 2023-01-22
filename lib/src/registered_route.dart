@@ -12,7 +12,7 @@ class RegisteredRoute {
   final RegExp expression;
 
   /// The builder for building the route content.
-  final WidgetBuilder Function(ServiceProvider) builder;
+  final ServiceFactory<WidgetBuilder> builder;
 
   /// Route constructor.
   RegisteredRoute({

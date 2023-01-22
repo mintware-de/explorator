@@ -6,6 +6,9 @@ Features:
 - Added a `Routing` class. This class simplifies the routing without a BuildContext.
 - Added the `path` to the `RouteArguments` class.
 
+Changes:
+- Changed the type of `RegisteredRoute.builder` to `ServiceFactory<WidgetBuilder>`
+
 ## 1.0.0
 
 Initial release
