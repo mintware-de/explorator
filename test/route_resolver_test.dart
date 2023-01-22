@@ -107,6 +107,7 @@ void main() {
         resolver.resolveRoute(const RouteSettings(name: '/hello/foo?a=b'));
     var args =
         enhancedServices.first.factory(mockServiceProvider) as RouteArguments;
+    expect(args.path, equals('/hello/foo'));
     expect(args.pathVariables, equals({'name': 'foo'}));
     expect(args.queryParameters, equals({'a': 'b'}));
     expect(resolved, isNotNull);

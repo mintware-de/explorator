@@ -62,7 +62,7 @@ class RouteResolver {
     return (subProvider as EnhanceableProvider).enhance(
       services: [
         LazyServiceDescriptor<RouteArguments>(
-          (p) => RouteArguments(pathVariables, queryParameters),
+          (p) => RouteArguments(routeName, pathVariables, queryParameters),
           const Service(
             lifetime: ServiceLifetime.transient,
             exposeAs: RouteArguments,
