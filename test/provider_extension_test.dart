@@ -14,10 +14,11 @@ void main() {
       mockServiceProvider = MockServiceProviderForTest();
     });
 
-    void _activateKnownServices({
+    void activateKnownServices({
       bool serviceProvider = true,
       bool routeBuilder = true,
       bool navigatorKey = true,
+      bool routing = true,
     }) {
       when(mockServiceProvider.has<dynamic>(ServiceProvider))
           .thenReturn(serviceProvider);
@@ -25,10 +26,11 @@ void main() {
           .thenReturn(routeBuilder);
       when(mockServiceProvider.has<dynamic>(GlobalKey<NavigatorState>))
           .thenReturn(navigatorKey);
+      when(mockServiceProvider.has<dynamic>(Routing)).thenReturn(routing);
     }
 
     test('useExplorator register the service provider itself', () {
-      _activateKnownServices(serviceProvider: false);
+      activateKnownServices(serviceProvider: false);
 
       mockServiceProvider.useExplorator();
       verify(mockServiceProvider.has<dynamic>(ServiceProvider));
@@ -43,7 +45,7 @@ void main() {
     });
 
     test('useExplorator register route builder', () {
-      _activateKnownServices(routeBuilder: false);
+      activateKnownServices(routeBuilder: false);
 
       var routeBuilder = MaterialRouteBuilder();
       mockServiceProvider.useExplorator(routeBuilder: routeBuilder);
@@ -61,7 +63,7 @@ void main() {
     });
 
     test('useExplorator register a global key for the navigator state', () {
-      _activateKnownServices(navigatorKey: false);
+      activateKnownServices(navigatorKey: false);
 
       var navigatorKey = GlobalKey<NavigatorState>();
       mockServiceProvider.useExplorator(navigatorKey: navigatorKey);
@@ -77,6 +79,32 @@ void main() {
       expect(
         captured.captured[0](mockServiceProvider),
         const TypeMatcher<GlobalKey<NavigatorState>>(),
+      );
+      expect(captured.captured[1], const TypeMatcher<Service>());
+    });
+
+    test('useExplorator register the routing class', () {
+      activateKnownServices(routing: false);
+
+      when(mockServiceProvider.noSuchMethod(Invocation.genericMethod(
+        #resolve,
+        [GlobalKey<NavigatorState>],
+        [],
+      ))).thenReturn(MockNavigatorKey());
+
+      mockServiceProvider.useExplorator();
+      verify(mockServiceProvider.has<dynamic>(Routing));
+
+      var captured = verify(
+        mockServiceProvider.register<Routing>(
+          captureAny,
+          captureAny,
+        ),
+      );
+
+      expect(
+        captured.captured[0](mockServiceProvider),
+        const TypeMatcher<Routing>(),
       );
       expect(captured.captured[1], const TypeMatcher<Service>());
     });
