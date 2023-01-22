@@ -11,3 +11,4 @@ export 'src/route_expression_builder.dart';
 export 'src/route_matcher.dart';
 export 'src/route_provider.dart';
 export 'src/route_resolver.dart';
+export 'src/routing.dart';
