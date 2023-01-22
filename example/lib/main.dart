@@ -6,29 +6,19 @@ import 'package:url_strategy/url_strategy.dart';
 import 'main.catalyst_builder.g.dart';
 
 @GenerateServiceProvider()
-// The ServiceMap is required for wiring the  RouteBuilder. Replace it with your own if necessary.
-@ServiceMap(services: {
-  MaterialRouteBuilder: Service(exposeAs: RouteBuilder),
-})
 void main() {
   setPathUrlStrategy();
 
-  /// Create an instance of the service provider
+  // Create an instance of the service provider
   var provider = DefaultServiceProvider();
+  provider
+    // Extension method from the explorator package
+    ..useExplorator(
+      routeBuilder: MaterialRouteBuilder(),
+    )
+    ..boot();
 
-  /// Register the provider itself
-  provider.register(
-    (p) => provider,
-    const Service(
-      exposeAs: ServiceProvider,
-      lifetime: ServiceLifetime.singleton,
-    ),
-  );
-
-  /// boot the provider
-  provider.boot();
-
-  /// Run the app
+  // Run the app
   runApp(MyApp(provider));
 }
 
