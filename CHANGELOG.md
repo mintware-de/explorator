@@ -1,4 +1,4 @@
-## Next
+## 1.1.0
 Features:
 - Added the `RouteProvider.tag` constant to reduce magic symbols.
 - Added a ServiceProvider extension for registering the explorator services.
