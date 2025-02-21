@@ -5,7 +5,10 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'main.catalyst_builder.g.dart';
 
-@GenerateServiceProvider()
+@GenerateServiceProvider(
+    providerClassName: 'DefaultServiceProvider',
+    includePackageDependencies: true
+)
 void main() {
   setPathUrlStrategy();
 

@@ -36,7 +36,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  catalyst_builder: ^3.2.1
+  catalyst_builder: ^4.1.0
   explorator:
     path: ..
   build_runner: ^2.3.3
@@ -94,3 +94,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+catalyst_builder: { cacheDir: '.cache/catalyst_builder' }
