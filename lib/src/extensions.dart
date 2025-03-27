@@ -1,4 +1,4 @@
-import 'package:catalyst_builder/catalyst_builder.dart';
+import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,7 +8,7 @@ extension ServiceProviderExtension on ServiceProvider {
   /// The [routeBuilder] is used to construct the [Route] instance.
   /// The [navigatorKey] is necessary to navigate using the [Routing] class.
   /// If the [navigatorKey] is null, a new key will be created and registered.
-  void useExplorator({
+  void setupExplorator({
     RouteBuilder? routeBuilder,
     GlobalKey<NavigatorState>? navigatorKey,
   }) {
@@ -17,7 +17,6 @@ extension ServiceProviderExtension on ServiceProvider {
     _addServiceProvider();
     _addRouteBuilder(routeBuilder);
     _addNavigatorKey(navigatorKey ?? GlobalKey<NavigatorState>());
-    _addRouting();
   }
 
   void _addServiceProvider() {
@@ -53,15 +52,6 @@ extension ServiceProviderExtension on ServiceProvider {
         exposeAs: GlobalKey<NavigatorState>,
         lifetime: ServiceLifetime.singleton,
       ),
-    );
-  }
-
-  void _addRouting() {
-    if (has<dynamic>(Routing)) return;
-
-    (this as ServiceRegistry).register<Routing>(
-      (p) => Routing(navigatorKey: p.resolve<GlobalKey<NavigatorState>>()),
-      const Service(exposeAs: Routing, lifetime: ServiceLifetime.singleton),
     );
   }
 }

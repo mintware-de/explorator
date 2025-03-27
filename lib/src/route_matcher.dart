@@ -1,4 +1,4 @@
-import 'package:catalyst_builder/catalyst_builder.dart';
+import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
 import 'package:explorator/explorator.dart';
 
 /// The RouteMatcher is used to match raw paths (/books/1234) against the

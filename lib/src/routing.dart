@@ -1,6 +1,8 @@
+import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
 import 'package:flutter/widgets.dart';
 
 /// Provides logic for routing
+@Service(exposeAs: Routing, lifetime: ServiceLifetime.singleton)
 class Routing {
   final GlobalKey<NavigatorState> _navigatorKey;
 

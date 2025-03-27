@@ -1,22 +1,22 @@
-import 'package:catalyst_builder/catalyst_builder.dart';
+import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/material.dart';
-import 'package:url_strategy/url_strategy.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'main.catalyst_builder.g.dart';
 
 @GenerateServiceProvider(
-    providerClassName: 'DefaultServiceProvider',
-    includePackageDependencies: true
+  providerClassName: 'DefaultServiceProvider',
 )
 void main() {
-  setPathUrlStrategy();
+  usePathUrlStrategy();
 
   // Create an instance of the service provider
   var provider = DefaultServiceProvider();
   provider
     // Extension method from the explorator package
-    ..useExplorator(
+    ..useExplorator()
+    ..setupExplorator(
       routeBuilder: MaterialRouteBuilder(),
     )
     ..boot();

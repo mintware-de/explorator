@@ -1,4 +1,4 @@
-import 'package:catalyst_builder/catalyst_builder.dart';
+import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mockito/annotations.dart';
@@ -55,6 +55,22 @@ class ServiceProviderForTest
     ServiceFactory<T> factory, [
     Service service = const Service(),
   ]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void applyPlugin(ServiceProviderPlugin plugin) {
+    throw UnimplementedError();
+  }
+
+  @override
+  T resolveOrGetParameter<T>(Type requiredBy, String param,
+      [String? parameter]) {
+    throw UnimplementedError();
+  }
+
+  @override
+  T? tryResolveOrGetParameter<T>(String parameter) {
     throw UnimplementedError();
   }
 }
