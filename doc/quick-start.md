@@ -3,22 +3,6 @@
 - Follow the setup steps for [catalyst_builder](https://pub.dev/packages/catalyst_builder).
 - Follow the setup steps for [explorator](https://pub.dev/packages/explorator/install).
 
-### Update the build.yaml
-
-Make sure that you set includePackageDependencies to true in the build.yaml:
-
-```yaml
-# build.yaml
-targets:
-  $default:
-    auto_apply_builders: true
-    builders:
-      catalyst_builder|buildServiceProvider:
-        options:
-          providerClassName: 'DefaultServiceProvider'
-          includePackageDependencies: true
-```
-
 ### Register the RouteResolver
 
 ```dart
@@ -28,7 +12,8 @@ void main() {
   var provider = DefaultServiceProvider();
   provider
     // Extension method from the explorator package
-    ..useExplorator(
+    ..useExplorator()
+    ..setupExplorator(
       routeBuilder: MaterialRouteBuilder(),
     )
     ..boot();
