@@ -14,7 +14,7 @@ dynamic resolveMock<T>() => false;
     NavigatorState,
   ],
   customMocks: [
-    MockSpec<ServiceProviderForTest>(fallbackGenerators: {
+    MockSpec<ServiceContainerForTest>(fallbackGenerators: {
       #resolve: resolveMock,
     }),
     MockSpec<GlobalKey<NavigatorState>>(
@@ -24,13 +24,13 @@ dynamic resolveMock<T>() => false;
 )
 void main() {}
 
-class ServiceProviderForTest
-    implements ServiceProvider, EnhanceableProvider, ServiceRegistry {
+class ServiceContainerForTest
+    implements AbstractServiceContainer, ServiceRegistry {
   @override
   void boot() {}
 
   @override
-  ServiceProvider enhance(
+  AbstractServiceContainer enhance(
           {List<LazyServiceDescriptor> services = const [],
           Map<String, dynamic> parameters = const {}}) =>
       throw UnimplementedError();
@@ -59,7 +59,7 @@ class ServiceProviderForTest
   }
 
   @override
-  void applyPlugin(ServiceProviderPlugin plugin) {
+  void applyPlugin(ServiceContainerPlugin plugin) {
     throw UnimplementedError();
   }
 

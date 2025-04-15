@@ -3,7 +3,7 @@ import 'package:explorator/explorator.dart';
 import 'package:flutter/widgets.dart';
 
 /// This extension simplifies the configuration for the explorator package.
-extension ServiceProviderExtension on ServiceProvider {
+extension ServiceProviderExtension on AbstractServiceContainer {
   /// Register necessary services for using the explorator package.
   /// The [routeBuilder] is used to construct the [Route] instance.
   /// The [navigatorKey] is necessary to navigate using the [Routing] class.
@@ -20,12 +20,12 @@ extension ServiceProviderExtension on ServiceProvider {
   }
 
   void _addServiceProvider() {
-    if (has<dynamic>(ServiceProvider)) return;
+    if (has<dynamic>(AbstractServiceContainer)) return;
 
-    (this as ServiceRegistry).register<ServiceProvider>(
+    (this as ServiceRegistry).register<AbstractServiceContainer>(
       (p) => this,
       const Service(
-        exposeAs: ServiceProvider,
+        exposeAs: AbstractServiceContainer,
         lifetime: ServiceLifetime.singleton,
       ),
     );

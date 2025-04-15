@@ -6,27 +6,29 @@ import 'package:explorator/src/route_matcher.dart' as _i4;
 import 'package:explorator/src/route_resolver.dart' as _i3;
 import 'package:explorator/src/routing.dart' as _i2;
 
-class Explorator implements _i1.ServiceProviderPlugin {
+class Explorator implements _i1.ServiceContainerPlugin {
   @override
-  Map<Type, _i1.ServiceDescriptor> provideKnownServices(_i1.ServiceProvider p) {
+  Map<Type, _i1.ServiceDescriptor> provideKnownServices(
+    _i1.AbstractServiceContainer c,
+  ) {
     return <Type, _i1.ServiceDescriptor>{
       _i2.Routing: _i1.ServiceDescriptor(
         const _i1.Service(exposeAs: _i2.Routing),
         () => _i2.Routing(
-          navigatorKey: p.resolveOrGetParameter(_i2.Routing, 'navigatorKey'),
+          navigatorKey: c.resolveOrGetParameter(_i2.Routing, 'navigatorKey'),
         ),
       ),
       _i3.RouteResolver: _i1.ServiceDescriptor(
         const _i1.Service(),
         () => _i3.RouteResolver(
-          p.resolveOrGetParameter(_i3.RouteResolver, '_routeMatcher'),
-          p.resolveOrGetParameter(_i3.RouteResolver, '_routeBuilder'),
-          p.resolveOrGetParameter(_i3.RouteResolver, '_serviceProvider'),
+          c.resolveOrGetParameter(_i3.RouteResolver, '_routeMatcher'),
+          c.resolveOrGetParameter(_i3.RouteResolver, '_routeBuilder'),
+          c.resolveOrGetParameter(_i3.RouteResolver, '_serviceContainer'),
         ),
       ),
       _i4.RouteMatcher: _i1.ServiceDescriptor(
         const _i1.Service(),
-        () => _i4.RouteMatcher(p.resolveByTag(#routeProvider).cast()),
+        () => _i4.RouteMatcher(c.resolveByTag(#routeProvider).cast()),
       ),
     };
   }
@@ -47,7 +49,7 @@ class Explorator implements _i1.ServiceProviderPlugin {
   }
 }
 
-extension ExploratorExtension on _i1.ServiceProvider {
+extension ExploratorExtension on _i1.AbstractServiceContainer {
   void useExplorator() {
     applyPlugin(Explorator());
   }

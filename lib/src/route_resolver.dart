@@ -8,14 +8,14 @@ import 'package:flutter/widgets.dart';
 @Service()
 class RouteResolver {
   final RouteBuilder _routeBuilder;
-  final ServiceProvider _serviceProvider;
+  final AbstractServiceContainer _serviceContainer;
   final RouteMatcher _routeMatcher;
 
   /// RouteResolver constructor.
   RouteResolver(
     this._routeMatcher,
     this._routeBuilder,
-    this._serviceProvider,
+    this._serviceContainer,
   );
 
   /// Resolve a route for the given [settings].
@@ -47,19 +47,15 @@ class RouteResolver {
   /// [RouteArguments] The arguments for the route which was resolved.
   ///                  This contains query parameters and path variables
   /// [RouteSettings]  The [RouteSettings] for the resolved route.
-  ServiceProvider _createSubProvider(
+  AbstractServiceContainer _createSubProvider(
     RegisteredRoute route,
     String routeName,
     Map<String, String> queryParameters,
     RouteSettings settings,
   ) {
-    var subProvider = _serviceProvider;
-    if (subProvider is! EnhanceableProvider) {
-      return subProvider;
-    }
-
+    var subContainer = _serviceContainer;
     var pathVariables = _getPathVariables(route.expression, routeName);
-    return (subProvider as EnhanceableProvider).enhance(
+    return subContainer.enhance(
       services: [
         LazyServiceDescriptor<RouteArguments>(
           (p) => RouteArguments(routeName, pathVariables, queryParameters),
