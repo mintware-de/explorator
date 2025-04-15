@@ -8,7 +8,7 @@ import 'mocks.dart';
 
 void main() {
   late RouteResolver resolver;
-  late MockServiceProviderForTest mockServiceProvider;
+  late MockServiceContainerForTest mockServiceProvider;
   late List<LazyServiceDescriptor> enhancedServices;
   late Map<String, dynamic> enhancedParameters;
   late MockRouteMatcher mockRouteMatcher;
@@ -18,7 +18,7 @@ void main() {
     enhancedParameters = {};
 
     mockRouteMatcher = MockRouteMatcher();
-    mockServiceProvider = MockServiceProviderForTest();
+    mockServiceProvider = MockServiceContainerForTest();
     when(mockServiceProvider.enhance(
       services: anyNamed('services'),
       parameters: anyNamed('parameters'),

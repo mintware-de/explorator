@@ -6,11 +6,10 @@
 ### Register the RouteResolver
 
 ```dart
-@GenerateServiceProvider()
 void main() {
-  // Create an instance of the service provider
-  var provider = DefaultServiceProvider();
-  provider
+  // Create an instance of the service container
+  var container = ServiceContainer();
+  container
     // Extension method from the explorator package
     ..useExplorator()
     ..setupExplorator(
@@ -18,15 +17,15 @@ void main() {
     )
     ..boot();
   // Run the app
-  runApp(MyApp(provider));
+  runApp(MyApp(container));
 }
 
 class MyApp extends StatelessWidget {
 
-  /// Inject the provider
-  final ServiceProvider _provider;
+  /// Inject the container
+  final AbstractServiceContainer _container;
 
-  const MyApp(this._provider, {super.key});
+  const MyApp(this._container, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +35,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // Use the navigator key
-      navigatorKey: _provider.resolve<GlobalKey<NavigatorState>>(),
+      navigatorKey: _container.resolve<GlobalKey<NavigatorState>>(),
       // Set the initial route. 
       initialRoute: '/home/HelloFlutter',
       // Use the RouteResolver for generating routes
-      onGenerateRoute: _provider
+      onGenerateRoute: _container
           .resolve<RouteResolver>()
           .resolveRoute,
     );
@@ -63,10 +62,10 @@ class HomeRouteProvider implements RouteProvider {
         // Return your routes
         RegisteredRoute(
           path: r'/home/{name}',
-          // The builder should return a function that accepts a provider (ServiceProvider from above)
-          // and returns a WidgetBuilder. Since we have the provider, we can use DI to get the instance
+          // The builder should return a function that accepts a container (ServiceContainer from above)
+          // and returns a WidgetBuilder. Since we have the container, we can use DI to get the instance
           // of our widget 🙌.
-          builder: (provider) => (ctx) => provider.resolve<MyHomePage>(),
+          builder: (container) => (ctx) => container.resolve<MyHomePage>(),
         )
       ];
 }
@@ -152,16 +151,16 @@ You can access path variables and query parameters when injecting the `RouteArgu
 ## Dev / Prod
 
 While you develop your app, you can use the following command to watch for changes and update the
-routing / ServiceProvider automatically
+routing / ServiceContainer automatically
 
 ```bash
-flutter pub run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch --delete-conflicting-outputs
 ```
 
 When building for production you can use this command before running `flutter build`:
 
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 ```
 
 ## How does it work?

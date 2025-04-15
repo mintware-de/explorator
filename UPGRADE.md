@@ -8,11 +8,12 @@ Update catalyst_builder to ^5.0.0
 
 Update your code:
 ```diff
- @GenerateServiceProvider()
  void main() {
    // Create an instance of the service provider
-   var provider = DefaultServiceProvider();
-   provider
+-  var provider = DefaultServiceProvider();
+-  provider
++  var container = ServiceContainer();
++  container
    // Extension method from the explorator package
      ..useExplorator(
 -      routeBuilder: MaterialRouteBuilder(),
@@ -22,6 +23,7 @@ Update your code:
 +    )
      ..boot();
    // Run the app
-   runApp(MyApp(provider));
+-  runApp(MyApp(provider));
++  runApp(MyApp(container));
  }
 ```

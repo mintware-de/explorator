@@ -8,10 +8,10 @@ import 'mocks.dart';
 
 void main() {
   group('Service Provider Extension', () {
-    late MockServiceProviderForTest mockServiceProvider;
+    late MockServiceContainerForTest mockServiceProvider;
 
     setUp(() {
-      mockServiceProvider = MockServiceProviderForTest();
+      mockServiceProvider = MockServiceContainerForTest();
     });
 
     void activateKnownServices({
@@ -20,7 +20,7 @@ void main() {
       bool navigatorKey = true,
       bool routing = true,
     }) {
-      when(mockServiceProvider.has<dynamic>(ServiceProvider))
+      when(mockServiceProvider.has<dynamic>(AbstractServiceContainer))
           .thenReturn(serviceProvider);
       when(mockServiceProvider.has<dynamic>(RouteBuilder))
           .thenReturn(routeBuilder);
@@ -33,9 +33,9 @@ void main() {
       activateKnownServices(serviceProvider: false);
 
       mockServiceProvider.setupExplorator();
-      verify(mockServiceProvider.has<dynamic>(ServiceProvider));
+      verify(mockServiceProvider.has<dynamic>(AbstractServiceContainer));
 
-      var captured = verify(mockServiceProvider.register<ServiceProvider>(
+      var captured = verify(mockServiceProvider.register<AbstractServiceContainer>(
           captureAny, captureAny));
       expect(
         captured.captured[0](mockServiceProvider),

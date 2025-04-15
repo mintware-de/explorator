@@ -1,19 +1,21 @@
+import 'package:catalyst_builder/catalyst_builder.dart';
 import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-import 'main.catalyst_builder.g.dart';
+import 'main.catalyst_builder.plugin.g.dart';
 
-@GenerateServiceProvider(
-  providerClassName: 'DefaultServiceProvider',
+@GenerateServiceContainerPlugin(
+  pluginClassName: 'AppPlugin',
 )
 void main() {
   usePathUrlStrategy();
 
-  // Create an instance of the service provider
-  var provider = DefaultServiceProvider();
-  provider
+  // Create an instance of the service container
+  var container = ServiceContainer();
+  container
+    ..useAppPlugin()
     // Extension method from the explorator package
     ..useExplorator()
     ..setupExplorator(
@@ -22,14 +24,14 @@ void main() {
     ..boot();
 
   // Run the app
-  runApp(MyApp(provider));
+  runApp(MyApp(container));
 }
 
 class MyApp extends StatelessWidget {
   /// Inject the provider
-  final ServiceProvider _provider;
+  final AbstractServiceContainer _container;
 
-  const MyApp(this._provider, {super.key});
+  const MyApp(this._container, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +41,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // Use the navigator key
-      navigatorKey: _provider.resolve<GlobalKey<NavigatorState>>(),
+      navigatorKey: _container.resolve<GlobalKey<NavigatorState>>(),
       // Set the initial route.
       initialRoute: '/',
       // Use the RouteResolver for generating routes
-      onGenerateRoute: _provider.resolve<RouteResolver>().resolveRoute,
+      onGenerateRoute: _container.resolve<RouteResolver>().resolveRoute,
     );
   }
 }

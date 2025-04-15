@@ -106,21 +106,21 @@ packages:
     source: hosted
     version: "8.9.5"
   catalyst_builder:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: catalyst_builder
-      sha256: ec82d1e6164fd6b4e9488ec72d8fd4d47b06900fdc4fefa7de463c1e03b32b7b
+      sha256: "43a2aadefb312ea174c6d7fabf206b14a1b8ef041ec207e4aadff8ac35293250"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0-dev.1"
+    version: "5.0.0-rc.1"
   catalyst_builder_contracts:
     dependency: "direct main"
     description:
       name: catalyst_builder_contracts
-      sha256: "70c5279d1b9bf4976290ccdf327a2126c062f84ca572f30279e819aa8442afd6"
+      sha256: afa8c7c5e25c439d076675eb8ff86d2dbc5950df57ff4443b5d8f826c0261cc8
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.1"
+    version: "2.0.0-rc.1"
   characters:
     dependency: transitive
     description:
@@ -199,7 +199,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.0-dev.1"
+    version: "2.0.0-rc.1"
   fake_async:
     dependency: transitive
     description:

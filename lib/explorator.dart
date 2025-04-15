@@ -16,5 +16,5 @@ export 'src/route_provider.dart';
 export 'src/route_resolver.dart';
 export 'src/routing.dart';
 
-@GenerateServiceProviderPlugin(pluginClassName: 'Explorator')
+@GenerateServiceContainerPlugin(pluginClassName: 'Explorator')
 void _() {} // ignore: unused_element

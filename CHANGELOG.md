@@ -1,3 +1,9 @@
+## 2.0.0-rc.1
+
+### Breaking Changes
+
+- `catalyst_builder: ^5.0.0-rc.1` is required
+
 ## 2.0.0-dev.1
 
 ### Breaking Changes
