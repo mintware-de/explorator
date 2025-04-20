@@ -1,3 +1,10 @@
+## 2.0.0
+
+### Breaking Changes
+
+- `catalyst_builder: ^5.0.0` is required
+- Check [UPGRADE.md](UPGRADE.md)
+
 ## 2.0.0-rc.1
 
 ### Breaking Changes

@@ -1,6 +1,6 @@
 name: explorator
 description: A routing system which fits perfectly between catalyst_builder and the flutter router.
-version: 2.0.0-rc.1
+version: 2.0.0
 repository: https://github.com/mintware-de/explorator
 
 environment:
