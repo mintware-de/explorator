@@ -16,12 +16,12 @@ jobs:
         with:
           flutter-version: '3.27.3'
           channel: 'stable'
-
       - name: Setup LCOV
         uses: hrishikesh-kadam/setup-lcov@v1
+      - name: Override dependencies
+        run: "echo 'dependency_overrides: { dart_style: ^2.0.1 }' > pubspec_overrides.yaml && cp pubspec_overrides.yaml example/"
       - name: Install dependencies
         run: dart pub get
-
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed lib
 
