@@ -30,3 +30,4 @@ migrate_working_dir/
 build/
 /coverage/
 /test/*.mocks.dart
+pubspec_overrides.yaml
