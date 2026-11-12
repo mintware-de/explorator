@@ -14,13 +14,16 @@ void main() {
       mockNavigatorKey = MockNavigatorKey();
       mockNavigatorState = MockNavigatorState();
       when(mockNavigatorKey.currentState).thenReturn(mockNavigatorState);
-      when(mockNavigatorState.pushNamed(any, arguments: anyNamed('arguments')))
-          .thenAnswer((_) => Future<void>.value(null));
-      when(mockNavigatorState.pushReplacementNamed(
-        any,
-        arguments: anyNamed('arguments'),
-        result: anyNamed('result'),
-      )).thenAnswer((_) => Future<void>.value(null));
+      when(
+        mockNavigatorState.pushNamed(any, arguments: anyNamed('arguments')),
+      ).thenAnswer((_) => Future<void>.value(null));
+      when(
+        mockNavigatorState.pushReplacementNamed(
+          any,
+          arguments: anyNamed('arguments'),
+          result: anyNamed('result'),
+        ),
+      ).thenAnswer((_) => Future<void>.value(null));
 
       when(mockNavigatorState.pop(any)).thenReturn(null);
 
@@ -45,11 +48,13 @@ void main() {
 
     test('replace with arguments and result', () async {
       await routing.replace('/foo', state: {'foo': 'bar'}, result: 1);
-      verify(mockNavigatorState.pushReplacementNamed(
-        '/foo',
-        arguments: {'foo': 'bar'},
-        result: 1,
-      ));
+      verify(
+        mockNavigatorState.pushReplacementNamed(
+          '/foo',
+          arguments: {'foo': 'bar'},
+          result: 1,
+        ),
+      );
     });
 
     test('goBack', () async {

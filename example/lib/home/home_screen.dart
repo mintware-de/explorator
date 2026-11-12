@@ -1,6 +1,6 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 @Service(lifetime: ServiceLifetime.transient)
 class HomeScreen extends StatelessWidget {
@@ -11,9 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Explorator example'),
-      ),
+      appBar: AppBar(title: const Text('Explorator example')),
       body: ListView(
         children: [
           ListTile(

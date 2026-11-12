@@ -1,4 +1,4 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
 import 'package:explorator_example/splash/splash_screen.dart';
 
@@ -6,9 +6,10 @@ import 'package:explorator_example/splash/splash_screen.dart';
 class SplashRouteProvider implements RouteProvider {
   @override
   List<RegisteredRoute> get routes => [
-        RegisteredRoute(
-          path: '/',
-          builder: (provider) => (ctx) => provider.resolve<SplashScreen>(),
-        ),
-      ];
+    RegisteredRoute(
+      path: '/',
+      builder: (provider) =>
+          (ctx) => provider.resolve<SplashScreen>(),
+    ),
+  ];
 }

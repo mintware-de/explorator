@@ -1,4 +1,4 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:flutter/widgets.dart';
 
 import 'route_expression_builder.dart';
@@ -15,8 +15,6 @@ class RegisteredRoute {
   final ServiceFactory<WidgetBuilder> builder;
 
   /// Route constructor.
-  RegisteredRoute({
-    required this.path,
-    required this.builder,
-  }) : expression = RouteExpressionBuilder.build(path);
+  RegisteredRoute({required this.path, required this.builder})
+    : expression = RouteExpressionBuilder.build(path);
 }

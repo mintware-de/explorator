@@ -1,4 +1,4 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
 
 /// The RouteMatcher is used to match raw paths (/books/1234) against the
@@ -20,8 +20,8 @@ class RouteMatcher {
   /// Returns the route that matches against the path.
   RegisteredRoute? match(String path) {
     return _allRoutes.cast<RegisteredRoute?>().firstWhere(
-          (route) => route!.expression.hasMatch(path),
-          orElse: () => null,
-        );
+      (route) => route!.expression.hasMatch(path),
+      orElse: () => null,
+    );
   }
 }

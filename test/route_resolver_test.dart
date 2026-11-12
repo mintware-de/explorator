@@ -1,4 +1,4 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mockito/mockito.dart';
@@ -8,7 +8,7 @@ import 'mocks.dart';
 
 void main() {
   late RouteResolver resolver;
-  late MockServiceContainerForTest mockServiceProvider;
+  late MockServiceContainer mockServiceProvider;
   late List<LazyServiceDescriptor> enhancedServices;
   late Map<String, dynamic> enhancedParameters;
   late MockRouteMatcher mockRouteMatcher;
@@ -18,11 +18,13 @@ void main() {
     enhancedParameters = {};
 
     mockRouteMatcher = MockRouteMatcher();
-    mockServiceProvider = MockServiceContainerForTest();
-    when(mockServiceProvider.enhance(
-      services: anyNamed('services'),
-      parameters: anyNamed('parameters'),
-    )).thenAnswer((realInvocation) {
+    mockServiceProvider = MockServiceContainer();
+    when(
+      mockServiceProvider.createScope(
+        services: anyNamed('services'),
+        parameters: anyNamed('parameters'),
+      ),
+    ).thenAnswer((realInvocation) {
       enhancedServices.addAll(
         realInvocation.namedArguments[#services] as List<LazyServiceDescriptor>,
       );
@@ -37,12 +39,14 @@ void main() {
         case '/hello':
           return RegisteredRoute(
             path: '/hello',
-            builder: (p0) => (ctx) => Container(),
+            builder: (p0) =>
+                (ctx) => Container(),
           );
         case '/hello/foo':
           return RegisteredRoute(
             path: '/hello/{name}',
-            builder: (p0) => (ctx) => Container(),
+            builder: (p0) =>
+                (ctx) => Container(),
           );
         default:
           return null;
@@ -52,7 +56,10 @@ void main() {
     var mockProvider = MockRouteProvider();
     when(mockProvider.routes).thenReturn([
       RegisteredRoute(
-          path: '/hello/{name}', builder: (p0) => (ctx) => Container()),
+        path: '/hello/{name}',
+        builder: (p0) =>
+            (ctx) => Container(),
+      ),
     ]);
     resolver = RouteResolver(
       mockRouteMatcher,
@@ -62,8 +69,9 @@ void main() {
   });
 
   test('resolve not existing', () {
-    var resolved =
-        resolver.resolveRoute(const RouteSettings(name: '/not-existing'));
+    var resolved = resolver.resolveRoute(
+      const RouteSettings(name: '/not-existing'),
+    );
     expect(resolved, isNull);
   });
 
@@ -85,8 +93,9 @@ void main() {
   });
 
   test('resolve with arguments', () {
-    var resolved =
-        resolver.resolveRoute(const RouteSettings(name: '/hello/foo'));
+    var resolved = resolver.resolveRoute(
+      const RouteSettings(name: '/hello/foo'),
+    );
     var args =
         enhancedServices.first.factory(mockServiceProvider) as RouteArguments;
     expect(args.pathVariables, equals({'name': 'foo'}));
@@ -94,8 +103,9 @@ void main() {
   });
 
   test('resolve with query parameters', () {
-    var resolved =
-        resolver.resolveRoute(const RouteSettings(name: '/hello?a=b'));
+    var resolved = resolver.resolveRoute(
+      const RouteSettings(name: '/hello?a=b'),
+    );
     var args =
         enhancedServices.first.factory(mockServiceProvider) as RouteArguments;
     expect(args.queryParameters, equals({'a': 'b'}));
@@ -103,8 +113,9 @@ void main() {
   });
 
   test('resolve with arguments and query parameters', () {
-    var resolved =
-        resolver.resolveRoute(const RouteSettings(name: '/hello/foo?a=b'));
+    var resolved = resolver.resolveRoute(
+      const RouteSettings(name: '/hello/foo?a=b'),
+    );
     var args =
         enhancedServices.first.factory(mockServiceProvider) as RouteArguments;
     expect(args.path, equals('/hello/foo'));

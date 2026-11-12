@@ -1,6 +1,6 @@
 library;
 
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 
 export 'explorator.catalyst_builder.plugin.g.dart';
 export 'src/exception/unbalanced_curly_braces_exception.dart';
