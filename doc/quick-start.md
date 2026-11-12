@@ -154,13 +154,13 @@ While you develop your app, you can use the following command to watch for chang
 routing / ServiceContainer automatically
 
 ```bash
-dart run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch
 ```
 
 When building for production you can use this command before running `flutter build`:
 
 ```bash
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 ## How does it work?

@@ -29,6 +29,6 @@ jobs:
         run: dart analyze lib
 
       - name: Generate the mocks
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: flutter pub run build_runner build
       - name: Run tests
         run: chmod +x run_tests.sh && ./run_tests.sh
