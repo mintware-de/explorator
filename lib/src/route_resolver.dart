@@ -1,4 +1,4 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,11 +12,7 @@ class RouteResolver {
   final RouteMatcher _routeMatcher;
 
   /// RouteResolver constructor.
-  RouteResolver(
-    this._routeMatcher,
-    this._routeBuilder,
-    this._serviceContainer,
-  );
+  RouteResolver(this._routeMatcher, this._routeBuilder, this._serviceContainer);
 
   /// Resolve a route for the given [settings].
   Route<dynamic>? resolveRoute(RouteSettings settings) {
@@ -47,7 +43,7 @@ class RouteResolver {
   /// [RouteArguments] The arguments for the route which was resolved.
   ///                  This contains query parameters and path variables
   /// [RouteSettings]  The [RouteSettings] for the resolved route.
-  AbstractServiceContainer _createSubProvider(
+  ServiceScope _createSubProvider(
     RegisteredRoute route,
     String routeName,
     Map<String, String> queryParameters,
@@ -55,7 +51,7 @@ class RouteResolver {
   ) {
     var subContainer = _serviceContainer;
     var pathVariables = _getPathVariables(route.expression, routeName);
-    return subContainer.enhance(
+    return subContainer.createScope(
       services: [
         LazyServiceDescriptor<RouteArguments>(
           (p) => RouteArguments(routeName, pathVariables, queryParameters),
@@ -70,7 +66,7 @@ class RouteResolver {
             lifetime: ServiceLifetime.transient,
             exposeAs: RouteSettings,
           ),
-        )
+        ),
       ],
     );
   }
@@ -78,8 +74,8 @@ class RouteResolver {
   Map<String, String> _getPathVariables(RegExp regExp, String routeName) {
     var match = regExp.allMatches(routeName).first;
 
-    return Map.fromEntries(match.groupNames.map(
-      (e) => MapEntry(e, match.namedGroup(e) ?? ''),
-    )).cast<String, String>();
+    return Map.fromEntries(
+      match.groupNames.map((e) => MapEntry(e, match.namedGroup(e) ?? '')),
+    ).cast<String, String>();
   }
 }

@@ -9,11 +9,11 @@ class UnexpectedCharException implements Exception {
   /// Throw a UnexpectedCharException for an unexpected [char] at [index] inside
   /// the [source] string.
   UnexpectedCharException(String source, int index, this.char)
-      : message = [
-          "Unexpected '$char' at offset $index.",
-          source,
-          "^".padLeft(index + 1)
-        ].join("\n");
+    : message = [
+        "Unexpected '$char' at offset $index.",
+        source,
+        "^".padLeft(index + 1),
+      ].join("\n");
 
   @override
   String toString() {

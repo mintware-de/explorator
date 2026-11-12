@@ -1,6 +1,6 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -8,10 +8,10 @@ import 'mocks.dart';
 
 void main() {
   group('Service Provider Extension', () {
-    late MockServiceContainerForTest mockServiceProvider;
+    late MockServiceContainer mockServiceProvider;
 
     setUp(() {
-      mockServiceProvider = MockServiceContainerForTest();
+      mockServiceProvider = MockServiceContainer();
     });
 
     void activateKnownServices({
@@ -20,12 +20,15 @@ void main() {
       bool navigatorKey = true,
       bool routing = true,
     }) {
-      when(mockServiceProvider.has<dynamic>(AbstractServiceContainer))
-          .thenReturn(serviceProvider);
-      when(mockServiceProvider.has<dynamic>(RouteBuilder))
-          .thenReturn(routeBuilder);
-      when(mockServiceProvider.has<dynamic>(GlobalKey<NavigatorState>))
-          .thenReturn(navigatorKey);
+      when(
+        mockServiceProvider.has<dynamic>(AbstractServiceContainer),
+      ).thenReturn(serviceProvider);
+      when(
+        mockServiceProvider.has<dynamic>(RouteBuilder),
+      ).thenReturn(routeBuilder);
+      when(
+        mockServiceProvider.has<dynamic>(GlobalKey<NavigatorState>),
+      ).thenReturn(navigatorKey);
       when(mockServiceProvider.has<dynamic>(Routing)).thenReturn(routing);
     }
 
@@ -34,9 +37,12 @@ void main() {
 
       mockServiceProvider.setupExplorator();
       verify(mockServiceProvider.has<dynamic>(AbstractServiceContainer));
-
-      var captured = verify(mockServiceProvider.register<AbstractServiceContainer>(
-          captureAny, captureAny));
+      var captured = verify(
+        mockServiceProvider.register<AbstractServiceContainer>(
+          captureAny,
+          captureAny,
+        ),
+      );
       expect(
         captured.captured[0](mockServiceProvider),
         same(mockServiceProvider),

@@ -1,3 +1,20 @@
+## 3.0.0-beta.1
+
+### Breaking Changes
+
+- `catalyst_builder: ^7.0.0-beta.2` is required
+- Updated `sdk: ^3.12.0` and `flutter: >=3.44.0`
+- Updated `flutter_lints: ^6.0.0`
+
+### Changes
+
+- Added `material_ui`
+
+### Internals
+
+- Removed `--delete-conflicting-outputs` from scripts
+- Regenerated platform apps for the example app
+
 ## 2.0.0
 
 ### Breaking Changes
@@ -21,10 +38,13 @@
 ## 1.2.0
 
 Changes:
+
 - Add support for `catalyst_builder: ^4.0.0`
 
 ## 1.1.0
+
 Features:
+
 - Added the `RouteProvider.tag` constant to reduce magic symbols.
 - Added a ServiceProvider extension for registering the explorator services.
 - Added a `GlobalKey<NavigatorState>` to the ServiceProvider.
@@ -32,6 +52,7 @@ Features:
 - Added the `path` to the `RouteArguments` class.
 
 Changes:
+
 - Changed the type of `RegisteredRoute.builder` to `ServiceFactory<WidgetBuilder>`
 
 ## 1.0.0

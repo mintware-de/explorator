@@ -6,7 +6,7 @@ class UnbalancedCurlyBracesException implements Exception {
   /// Throw a [UnbalancedCurlyBracesException] for unbalanced curly braces in
   /// the [source] string.
   UnbalancedCurlyBracesException(String source)
-      : message = 'Unbalanced curly braces in $source';
+    : message = 'Unbalanced curly braces in $source';
 
   @override
   String toString() => message;

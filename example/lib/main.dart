@@ -1,14 +1,11 @@
-import 'package:catalyst_builder/catalyst_builder.dart';
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'main.catalyst_builder.plugin.g.dart';
 
-@GenerateServiceContainerPlugin(
-  pluginClassName: 'AppPlugin',
-)
+@GenerateServiceContainerPlugin(pluginClassName: 'AppPlugin')
 void main() {
   usePathUrlStrategy();
 
@@ -18,9 +15,7 @@ void main() {
     ..useAppPlugin()
     // Extension method from the explorator package
     ..useExplorator()
-    ..setupExplorator(
-      routeBuilder: MaterialRouteBuilder(),
-    )
+    ..setupExplorator(routeBuilder: MaterialRouteBuilder())
     ..boot();
 
   // Run the app
@@ -37,9 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       // Use the navigator key
       navigatorKey: _container.resolve<GlobalKey<NavigatorState>>(),
       // Set the initial route.

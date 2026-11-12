@@ -1,4 +1,4 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:flutter/widgets.dart';
 
 /// Provides logic for routing
@@ -7,16 +7,11 @@ class Routing {
   final GlobalKey<NavigatorState> _navigatorKey;
 
   /// Creates a new routing instance.
-  /// The [navigatorKey] is required for navigating without a BuildContext.
-  Routing({
-    required GlobalKey<NavigatorState> navigatorKey,
-  }) : _navigatorKey = navigatorKey;
+  /// The [_navigatorKey] is required for navigating without a BuildContext.
+  Routing({required this._navigatorKey});
 
   /// Navigate to a new [route]. The [state] is passed as the route arguments.
-  Future<T?> go<T extends Object?>(
-    String route, {
-    Object? state,
-  }) {
+  Future<T?> go<T extends Object?>(String route, {Object? state}) {
     return _navigatorKey.currentState!.pushNamed<T?>(route, arguments: state);
   }
 

@@ -12,9 +12,16 @@ void main() {
     setUp(() {
       var mockProvider = MockRouteProvider();
       when(mockProvider.routes).thenReturn([
-        RegisteredRoute(path: '/hello', builder: (p0) => (ctx) => Container()),
         RegisteredRoute(
-            path: '/hello/{name}', builder: (p0) => (ctx) => Container()),
+          path: '/hello',
+          builder: (p0) =>
+              (ctx) => Container(),
+        ),
+        RegisteredRoute(
+          path: '/hello/{name}',
+          builder: (p0) =>
+              (ctx) => Container(),
+        ),
       ]);
       matcher = RouteMatcher([mockProvider]);
     });

@@ -1,6 +1,6 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 @Service(lifetime: ServiceLifetime.transient)
 class VariablesScreen extends StatefulWidget {
@@ -8,8 +8,7 @@ class VariablesScreen extends StatefulWidget {
 
   final RouteSettings _settings;
 
-  const VariablesScreen(this._arguments, this._settings, {Key? key})
-      : super(key: key);
+  const VariablesScreen(this._arguments, this._settings, {super.key});
 
   @override
   State<VariablesScreen> createState() => _VariablesScreenState();
@@ -39,13 +38,8 @@ class _VariablesScreenState extends State<VariablesScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Variables'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(text),
-      ),
+      appBar: AppBar(title: const Text('Variables')),
+      body: Padding(padding: const EdgeInsets.all(8.0), child: Text(text)),
     );
   }
 }

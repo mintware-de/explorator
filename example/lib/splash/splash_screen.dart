@@ -1,6 +1,6 @@
-import 'package:catalyst_builder_contracts/catalyst_builder_contracts.dart';
+import 'package:catalyst_builder_runtime/catalyst_builder_runtime.dart';
 import 'package:explorator/explorator.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 @Service(lifetime: ServiceLifetime.transient)
 class SplashScreen extends StatelessWidget {
@@ -15,9 +15,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Material(
-      child: Center(
-        child: Text('Splash Screen, wait 3 seconds'),
-      ),
+      child: Center(child: Text('Splash Screen, wait 3 seconds')),
     );
   }
 }
