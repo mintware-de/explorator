@@ -1,0 +1,36 @@
+# Publishes to pub.dev via OIDC trusted publisher.
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  tag-check:
+    name: Verify tag matches pubspec version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Compare tag against pubspec.yaml
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PUBSPEC=$(awk '/^version:/ { print $2; exit }' pubspec.yaml)
+          echo "Tag:     $TAG"
+          echo "Pubspec: $PUBSPEC"
+          if [ "$TAG" != "$PUBSPEC" ]; then
+            echo "::error::Tag v$TAG does not match pubspec version $PUBSPEC"
+            exit 1
+          fi
+
+  publish:
+    needs: tag-check
+    # id-token must be re-declared here — reusable workflows do not inherit
+    # the workflow-level permissions block.
+    permissions:
+      id-token: write
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
