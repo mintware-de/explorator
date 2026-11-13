@@ -14,6 +14,7 @@
 
 - Removed `--delete-conflicting-outputs` from scripts
 - Regenerated platform apps for the example app
+- Add dependabot
 
 ## 2.0.0
 
