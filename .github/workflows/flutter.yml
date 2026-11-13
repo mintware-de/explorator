@@ -1,32 +1,164 @@
-name: Flutter
+# Actions are pinned to major-version tags (`@v2`, `@v7`); Dependabot keeps
+# them current. `actions/*` and `dart-lang` are first-party;
+# `subosito/flutter-action` and `hrishikesh-kadam/setup-lcov` are the de facto
+# standard community actions for Flutter CI, so SHA-pinning is not justified
+# for a library repo.
+name: CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  analyze:
+    name: Analyze & format
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.44.0'
-          channel: 'stable'
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate mocks
+        # test/*.mocks.dart is gitignored; the analyzer needs it to resolve
+        # the imports in test/.
+        run: dart run build_runner build
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Analyze
+        run: dart analyze --fatal-infos --fatal-warnings lib test
+
+  test:
+    name: Test (${{ matrix.label }} / ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # flutter-action matches flutter-version verbatim against the release
+        # manifest, so channel aliases go through `channel` with no
+        # flutter-version. 3.44.0 is the floor from pubspec.yaml
+        # (environment.flutter).
+        include:
+          - label: '3.44.0'
+            channel: stable
+            flutter-version: '3.44.0'
+            os: ubuntu-latest
+          - label: stable
+            channel: stable
+            os: ubuntu-latest
+          - label: beta
+            channel: beta
+            os: ubuntu-latest
+          - label: stable
+            channel: stable
+            os: macos-latest
+          - label: stable
+            channel: stable
+            os: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ matrix.channel }}
+          flutter-version: ${{ matrix['flutter-version'] }}
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate mocks
+        run: dart run build_runner build
+      - name: Run tests
+        run: flutter test --reporter expanded
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
       - name: Setup LCOV
         uses: hrishikesh-kadam/setup-lcov@v1
       - name: Install dependencies
-        run: dart pub get
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed lib
+        run: flutter pub get
+      - name: Generate mocks
+        run: dart run build_runner build
+      - name: Run tests with coverage
+        run: flutter test --coverage
+      - name: Filter generated files from coverage
+        run: |
+          lcov --remove coverage/lcov.info \
+            'lib/explorator.dart' \
+            'lib/explorator.catalyst_builder.plugin.g.dart' \
+            -o coverage/lcov.info
+      - name: Report coverage percentage
+        run: |
+          PCT=$(awk -F: '
+            /^LF:/ { lf += $2 }
+            /^LH:/ { lh += $2 }
+            END { if (lf > 0) printf "%.1f", (lh / lf) * 100; else print "0.0" }
+          ' coverage/lcov.info)
+          echo "## Coverage: ${PCT}%" >> "$GITHUB_STEP_SUMMARY"
+          echo "Line coverage: ${PCT}%"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: coverage-lcov
+          path: coverage/lcov.info
+          retention-days: 14
 
-      - name: Analyze project source
-        run: dart analyze lib
+  pana:
+    name: pana score
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Install pana
+        run: dart pub global activate pana
+      - name: Run pana
+        run: dart pub global run pana --no-warning --exit-code-threshold 10 --json > pana.json
+      - name: Report score
+        if: always()
+        run: |
+          if [ -f pana.json ]; then
+            SCORE=$(jq -r '"\(.scores.grantedPoints)/\(.scores.maxPoints)"' pana.json)
+            echo "## pana: ${SCORE}" >> "$GITHUB_STEP_SUMMARY"
+            echo "pana score: ${SCORE}"
+          fi
 
-      - name: Generate the mocks
-        run: flutter pub run build_runner build
-      - name: Run tests
-        run: chmod +x run_tests.sh && ./run_tests.sh
+  publish-dry-run:
+    name: Publish dry-run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Dry-run publish
+        run: flutter pub publish --dry-run
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build dartdoc with link validation
+        run: dart doc --validate-links
